@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة نيوتن - للصف السادس العلمي</title>
+    <style>
+        :root {
+            --primary: #1a1a2e;
+            --secondary: #16213e;
+            --accent: #e94560;
+            --accent2: #0f3460;
+            --gold: #f0a500;
+            --light: #eaeaea;
+            --white: #ffffff;
+            --card-bg: #1e2a3a;
+            --text: #d1d5db;
+            --text-light: #9ca3af;
+            --gradient: linear-gradient(135deg, #0f3460 0%, #1a1a2e 50%, #16213e 100%);
+            --gradient-accent: linear-gradient(135deg, #e94560 0%, #f0a500 100%);
+            --shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.5);
+            --radius: 16px;
+            --radius-sm: 10px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Tahoma', 'Arial', sans-serif;
+            background: var(--primary);
+            color: var(--text);
+            line-height: 1.7;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Stars Background */
+        .stars-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle var(--dur) ease-in-out infinite;
+            opacity: 0;
+        }
+        @keyframes twinkle {
+            0%,
+            100% {
+                opacity: 0.2;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.9;
+                transform: scale(1.8);
+            }
+        }
+
+        /* Floating particles */
+        .particle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 0;
+            border-radius: 50%;
+            animation: floatUp var(--dur2) linear infinite;
+            opacity: 0;
+        }
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.7;
+            }
+            90% {
+                opacity: 0.2;
+            }
+            100% {
+                transform: translateY(-100px) scale(2);
+                opacity: 0;
+            }
+        }
+
+        /* Main Container */
+        .main-container {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 30px 20px 20px;
+            position: relative;
+        }
+        .logo-area {
+            display: inline-block;
+            position: relative;
+            margin-bottom: 10px;
+        }
+        .logo-icon {
+            font-size: 60px;
+            animation: bounce 2s ease-in-out infinite;
+            display: block;
+        }
+        @keyframes bounce {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-18px);
+            }
+        }
+        .platform-name {
+            font-size: 3rem;
+            font-weight: 900;
+            background: var(--gradient-accent);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 2px;
+            margin: 5px 0;
+            text-shadow: none;
+        }
+        .platform-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            letter-spacing: 1px;
+            font-weight: 300;
+        }
+        .header-line {
+            width: 120px;
+            height: 4px;
+            background: var(--gradient-accent);
+            margin: 15px auto;
+            border-radius: 2px;
+            animation: pulseLine 2s ease-in-out infinite;
+        }
+        @keyframes pulseLine {
+            0%,
+            100% {
+                width: 120px;
+                opacity: 0.7;
+            }
+            50% {
+                width: 200px;
+                opacity: 1;
+            }
+        }
+
+        /* Cards */
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 30px;
+            margin: 20px 0;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-accent);
+            border-radius: 3px 3px 0 0;
+        }
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        .card-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .card-title .icon {
+            font-size: 1.8rem;
+        }
+        .card-text {
+            color: var(--text);
+            font-size: 1.05rem;
+            line-height: 1.9;
+        }
+        .card-text strong {
+            color: var(--gold);
+        }
+
+        /* Feature Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+        .feature-item {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: var(--radius-sm);
+            padding: 18px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            transition: var(--transition);
+        }
+        .feature-item:hover {
+            background: rgba(255, 255, 255, 0.07);
+            transform: scale(1.03);
+        }
+        .feature-icon {
+            font-size: 2.2rem;
+            display: block;
+            margin-bottom: 8px;
+        }
+        .feature-label {
+            font-weight: 600;
+            color: var(--white);
+            font-size: 0.95rem;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 14px 32px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+            transition: var(--transition);
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+            font-family: inherit;
+        }
+        .btn-register {
+            background: var(--gradient-accent);
+            color: #fff;
+            box-shadow: 0 6px 25px rgba(233, 68, 96, 0.4);
+        }
+        .btn-register:hover {
+            box-shadow: 0 10px 35px rgba(233, 68, 96, 0.6);
+            transform: translateY(-3px);
+        }
+        .btn-work {
+            background: transparent;
+            color: var(--white);
+            border: 2px solid var(--gold);
+            box-shadow: 0 6px 25px rgba(240, 165, 0, 0.25);
+        }
+        .btn-work:hover {
+            background: var(--gold);
+            color: var(--primary);
+            box-shadow: 0 10px 35px rgba(240, 165, 0, 0.5);
+            transform: translateY(-3px);
+        }
+        .btn-copy {
+            background: #22c55e;
+            color: #fff;
+            padding: 12px 24px;
+            font-size: 1rem;
+            box-shadow: 0 4px 20px rgba(34, 197, 94, 0.35);
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            font-weight: 700;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+        .btn-copy:hover {
+            background: #16a34a;
+            box-shadow: 0 8px 28px rgba(34, 197, 94, 0.55);
+            transform: scale(1.05);
+        }
+        .btn-generate {
+            background: #8b5cf6;
+            color: #fff;
+            padding: 14px 28px;
+            font-size: 1.05rem;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            font-weight: 700;
+            box-shadow: 0 6px 22px rgba(139, 92, 246, 0.4);
+            transition: var(--transition);
+            font-family: inherit;
+            margin-right: 10px;
+        }
+        .btn-generate:hover {
+            background: #7c3aed;
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.6);
+            transform: scale(1.05);
+        }
+        .btn-close {
+            background: #ef4444;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            font-family: inherit;
+            font-size: 0.95rem;
+        }
+        .btn-close:hover {
+            background: #dc2626;
+            transform: scale(1.05);
+        }
+
+        .buttons-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            justify-content: center;
+            margin-top: 25px;
+        }
+
+        /* Random Number Display */
+        .number-display {
+            background: #0a0e17;
+            border: 2px dashed rgba(255, 255, 255, 0.2);
+            border-radius: var(--radius-sm);
+            padding: 20px;
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 900;
+            letter-spacing: 6px;
+            color: #f0a500;
+            margin: 20px 0;
+            font-family: 'Courier New', 'Consolas', monospace;
+            word-break: break-all;
+            min-height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            user-select: all;
+            cursor: pointer;
+        }
+        .number-display:hover {
+            border-color: var(--gold);
+            background: #0f1620;
+        }
+        .number-display:active {
+            background: #1a2535;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #22c55e;
+            color: #fff;
+            padding: 14px 28px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1rem;
+            z-index: 999;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none;
+        }
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+        .toast.error {
+            background: #ef4444;
+        }
+
+        /* Modal Overlay */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.35s ease;
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        .modal {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 35px;
+            max-width: 520px;
+            width: 90%;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            text-align: center;
+            position: relative;
+            transform: scale(0.9);
+            transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .modal-overlay.active .modal {
+            transform: scale(1);
+        }
+        .modal h2 {
+            font-size: 1.8rem;
+            color: var(--white);
+            margin-bottom: 15px;
+        }
+        .modal .number-display {
+            font-size: 2rem;
+            letter-spacing: 4px;
+        }
+        .modal .buttons-row {
+            margin-top: 20px;
+        }
+
+        /* Section Divider */
+        .section-divider {
+            text-align: center;
+            margin: 15px 0;
+            color: var(--text-light);
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+        }
+        .section-divider span {
+            display: inline-block;
+            padding: 0 15px;
+            position: relative;
+        }
+        .section-divider span::before,
+        .section-divider span::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 50px;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.2);
+        }
+        .section-divider span::before {
+            right: -55px;
+        }
+        .section-divider span::after {
+            left: -55px;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-light);
+            font-size: 0.85rem;
+            margin-top: 10px;
+        }
+        .footer span {
+            color: var(--gold);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .platform-name {
+                font-size: 2rem;
+            }
+            .logo-icon {
+                font-size: 40px;
+            }
+            .card {
+                padding: 20px 15px;
+            }
+            .card-title {
+                font-size: 1.3rem;
+            }
+            .number-display {
+                font-size: 1.5rem;
+                letter-spacing: 3px;
+                padding: 15px;
+            }
+            .btn {
+                padding: 12px 22px;
+                font-size: 0.95rem;
+            }
+            .features-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+            .buttons-row {
+                gap: 10px;
+            }
+            .modal {
+                padding: 20px;
+            }
+            .modal .number-display {
+                font-size: 1.3rem;
+                letter-spacing: 2px;
+            }
+        }
+        @media (max-width: 400px) {
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            .platform-name {
+                font-size: 1.5rem;
+            }
+            .btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Stars Background -->
+    <div class="stars-container" id="starsContainer"></div>
+
+    <!-- Floating Particles -->
+    <div id="particlesContainer"></div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <!-- Main Content -->
+    <div class="main-container">
+
+        <!-- Header -->
+        <header class="header">
+            <div class="logo-area">
+                <span class="logo-icon">🍎</span>
+            </div>
+            <h1 class="platform-name">منصة نيوتن</h1>
+            <p class="platform-subtitle">للصف السادس العلمي في العراق 🇮🇶</p>
+            <div class="header-line"></div>
+            <p style="color: var(--text-light); max-width: 600px; margin: 10px auto;">
+                منصتك التعليمية الشاملة لطلاب السادس العلمي – دروس، ملخصات، اختبارات، وكل ما تحتاجه للتفوق ✨
+            </p>
+        </header>
+
+        <!-- تقرير عن المنصة -->
+        <div class="card" id="reportSection">
+            <div class="card-title">
+                <span class="icon">📋</span> تقرير عن منصة نيوتن
+            </div>
+            <div class="card-text">
+                <p>
+                    <strong>منصة نيوتن</strong> هي منصة تعليمية إلكترونية متكاملة صُممت خصيصاً
+                    <strong>لطلاب الصف السادس العلمي</strong> في العراق. تهدف المنصة إلى تقديم تجربة تعليمية
+                    متميزة تجمع بين الشرح المبسط، الملخصات الذكية، والاختبارات التفاعلية.
+                </p>
+                <br>
+                <p>
+                    <strong>📌 ما تقدمه المنصة (افتراضياً):</strong>
+                </p>
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <span class="feature-icon">📚</span>
+                        <span class="feature-label">ملخصات شاملة</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">🎥</span>
+                        <span class="feature-label">دروس فيديو</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">📝</span>
+                        <span class="feature-label">اختبارات تفاعلية</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">📊</span>
+                        <span class="feature-label">تتبع المستوى</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">💬</span>
+                        <span class="feature-label">مجتمع نقاشي</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">🏆</span>
+                        <span class="feature-label">نظام مكافآت</span>
+                    </div>
+                </div>
+                <br>
+                <p>
+                    <strong>🎯 الرؤية:</strong> أن تكون المنصة الأولى في العراق لدعم طلاب السادس العلمي
+                    وتمكينهم من تحقيق أعلى الدرجات في الامتحانات الوزارية. نؤمن بأن كل طالب يستحق
+                    فرصة متكافئة للتعلم والتفوق، لذلك نقدم محتوى عالي الجودة بطريقة سهلة وممتعة.
+                </p>
+            </div>
+        </div>
+
+        <!-- أزرار رئيسية -->
+        <div class="buttons-row">
+            <button class="btn btn-register" onclick="showRegisterModal()">
+                📝 سجّل في المنصة
+            </button>
+            <button class="btn btn-work" onclick="showWorkModal()">
+                💼 العمل في المنصة
+            </button>
+        </div>
+
+        <!-- Modal: التسجيل -->
+        <div class="modal-overlay" id="registerModal">
+            <div class="modal">
+                <h2>📝 تسجيل في منصة نيوتن</h2>
+                <p style="color: var(--text-light); margin-bottom: 15px;">
+                    مرحباً بك! لإنشاء حساب في المنصة، يُرجى التواصل مع الإدارة عبر البريد الإلكتروني أو التليغرام.
+                </p>
+                <p style="color: var(--gold); font-weight: 700;">
+                    📧 newton.platform@edu.iq
+                </p>
+                <p style="color: var(--gold); font-weight: 700;">
+                    📱 تليغرام: @NewtonPlatformIQ
+                </p>
+                <br>
+                <p style="color: var(--text-light); font-size: 0.9rem;">
+                    (هذه معلومات افتراضية – تُستخدم لأغراض العرض)
+                </p>
+                <div class="buttons-row" style="margin-top: 15px;">
+                    <button class="btn-close" onclick="closeRegisterModal()">إغلاق ✕</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal: العمل في المنصة (مولد الأرقام العشوائية) -->
+        <div class="modal-overlay" id="workModal">
+            <div class="modal">
+                <h2>💼 العمل في المنصة</h2>
+                <p style="color: var(--text-light); margin-bottom: 10px;">
+                    اضغط على الزر أدناه لتوليد رقم عشوائي مكون من <strong>10 أرقام</strong>، ثم انسخه.
+                </p>
+                <div class="number-display" id="randomNumberDisplay" onclick="copyNumber()" title="اضغط للنسخ">
+                    ----- ------
+                </div>
+                <p style="color: var(--text-light); font-size: 0.85rem; margin-bottom: 15px;">
+                    ⚡ اضغط على الرقم أعلاه لنسخه مباشرة
+                </p>
+                <div class="buttons-row">
+                    <button class="btn-generate" onclick="generateRandomNumber()">
+                        🎲 توليد رقم جديد
+                    </button>
+                    <button class="btn-copy" onclick="copyNumber()">
+                        📋 نسخ الرقم
+                    </button>
+                </div>
+                <div class="buttons-row" style="margin-top: 10px;">
+                    <button class="btn-close" onclick="closeWorkModal()">إغلاق ✕</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section Divider -->
+        <div class="section-divider">
+            <span>⚡ ⚡ ⚡</span>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>© 2025 <span>منصة نيوتن</span> – لطلاب السادس العلمي في العراق | جميع الحقوق محفوظة</p>
+            <p style="font-size: 0.75rem; margin-top: 5px;">Newton Platform – For Iraqi 6th Grade Science Students</p>
+        </div>
+
+    </div>
+
+    <script>
+        // ==================== إنشاء النجوم ====================
+        const starsContainer = document.getElementById('starsContainer');
+        for (let i = 0; i < 120; i++) {
+            const star = document.createElement('div');
+            star.classList.add('star');
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.width = (Math.random() * 3 + 1) + 'px';
+            star.style.height = star.style.width;
+            star.style.setProperty('--dur', (Math.random() * 3 + 1.5) + 's');
+            star.style.animationDelay = Math.random() * 5 + 's';
+            starsContainer.appendChild(star);
+        }
+
+        // ==================== إنشاء الجسيمات العائمة ====================
+        const particlesContainer = document.getElementById('particlesContainer');
+        const colors = ['#e94560', '#f0a500', '#8b5cf6', '#22c55e', '#3b82f6', '#ec4899', '#06b6d4'];
+        for (let i = 0; i < 25; i++) {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.width = (Math.random() * 6 + 3) + 'px';
+            particle.style.height = particle.style.width;
+            particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+            particle.style.setProperty('--dur2', (Math.random() * 12 + 10) + 's');
+            particle.style.animationDelay = Math.random() * 12 + 's';
+            particlesContainer.appendChild(particle);
+        }
+
+        // ==================== المتغيرات العامة ====================
+        let currentRandomNumber = '';
+
+        // ==================== توليد رقم عشوائي من 10 أرقام ====================
+        function generateRandomNumber() {
+            let number = '';
+            for (let i = 0; i < 10; i++) {
+                number += Math.floor(Math.random() * 10);
+            }
+            // تنسيق الرقم: 5 أرقام ثم مسافة ثم 5 أرقام (لتسهيل القراءة)
+            const formatted = number.substring(0, 5) + ' ' + number.substring(5, 10);
+            currentRandomNumber = number; // تخزين بدون مسافة
+            const display = document.getElementById('randomNumberDisplay');
+            if (display) {
+                display.textContent = formatted;
+                display.style.animation = 'none';
+                display.offsetHeight; // reflow
+                display.style.animation = 'pulseLine 0.4s ease-in-out';
+                setTimeout(() => {
+                    display.style.animation = '';
+                }, 400);
+            }
+        }
+
+        // ==================== نسخ الرقم ====================
+        function copyNumber() {
+            if (!currentRandomNumber || currentRandomNumber.length !== 10) {
+                showToast('⚠️ الرجاء توليد رقم أولاً', 'error');
+                return;
+            }
+            // النسخ إلى الحافظة
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(currentRandomNumber).then(() => {
+                    showToast('✅ تم نسخ الرقم: ' + currentRandomNumber);
+                }).catch(() => {
+                    fallbackCopy(currentRandomNumber);
+                });
+            } else {
+                fallbackCopy(currentRandomNumber);
+            }
+        }
+
+        function fallbackCopy(text) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            textarea.style.left = '-9999px';
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                showToast('✅ تم نسخ الرقم: ' + text);
+            } catch (e) {
+                showToast('❌ فشل النسخ – حاول يدوياً', 'error');
+            }
+            document.body.removeChild(textarea);
+        }
+
+        // ==================== إظهار التنبيه (Toast) ====================
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast ' + type + ' show';
+            clearTimeout(toast._timeout);
+            toast._timeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2200);
+        }
+
+        // ==================== المودالات ====================
+        function showRegisterModal() {
+            const modal = document.getElementById('registerModal');
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeRegisterModal() {
+            const modal = document.getElementById('registerModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function showWorkModal() {
+            const modal = document.getElementById('workModal');
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            // توليد رقم تلقائي عند فتح المودال إذا لم يكن موجوداً
+            if (!currentRandomNumber || currentRandomNumber.length !== 10) {
+                generateRandomNumber();
+            } else {
+                // تحديث العرض
+                const display = document.getElementById('randomNumberDisplay');
+                if (display) {
+                    const formatted = currentRandomNumber.substring(0, 5) + ' ' + currentRandomNumber.substring(5, 10);
+                    display.textContent = formatted;
+                }
+            }
+        }
+
+        function closeWorkModal() {
+            const modal = document.getElementById('workModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // إغلاق المودال عند النقر خارج المحتوى
+        document.getElementById('registerModal').addEventListener('click', function(e) {
+            if (e.target === this) closeRegisterModal();
+        });
+        document.getElementById('workModal').addEventListener('click', function(e) {
+            if (e.target === this) closeWorkModal();
+        });
+
+        // إغلاق المودال عند الضغط على Escape
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeRegisterModal();
+                closeWorkModal();
+            }
+        });
+
+        // ==================== تهيئة أولية ====================
+        // توليد رقم أولي جاهز عند تحميل الصفحة (للمودال)
+        generateRandomNumber();
+        console.log('🍎 منصة نيوتن – جاهزة!');
+        console.log('📋 رقم جاهز للتجربة:', currentRandomNumber);
+    </script>
+</body>
+</html>
